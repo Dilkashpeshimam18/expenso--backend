@@ -20,7 +20,7 @@
 //             await ForgotPasswordRequests.create({ id, userId: user.id, isactive: true }).catch((err) => {
 //                 throw new Error(err)
 //             })
-//             let link = `http://localhost:4000/password/resetpassword/${id}`
+//             let link = `https://expenso-backend-production.up.railway.app/password/resetpassword/${id}`
 //             const msg = {
 //                 to: email,
 //                 from: 'dilkashpeshimam@gmail.com',

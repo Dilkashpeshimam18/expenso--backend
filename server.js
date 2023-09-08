@@ -15,7 +15,7 @@ const fs = require('fs')
 const mongoose=require('mongoose')
 const path = require('path')
 
-const PORT= 4000
+const PORT= process.env.PORT || 4000
 const app = express()
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
 //     flags: 'a'
@@ -45,6 +45,6 @@ app.use(express.static(path.join(__dirname, "..", "/client/build")));
 app.use(express.static(path.join(__dirname,"..", "/client/public")));
 
 
-app.listen(4000, () => {
+app.listen(PORT, () => {
     console.log('SERVER RUNNING!!')
 })
