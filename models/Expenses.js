@@ -16,6 +16,10 @@ const expenseSchema = mongoose.Schema({
         required: true,
 
     },
+    month:{
+        type:String,
+        required:true
+    },
     userId: {
         type: String,
         required: true,

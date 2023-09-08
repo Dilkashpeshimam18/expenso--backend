@@ -18,10 +18,13 @@ exports.addExpense = async (req, res) => {
             remaining_balance: newRemainingBalance
         });
 
+        const month = new Date().toLocaleString('default', { month: 'long' });
+
         const expense = new Expenses({
             name: description,
             amount,
             category,
+            month,
             userId: id
         });
 
@@ -54,9 +57,10 @@ exports.updateExpense = async (req, res) => {
         const userId = req.user._id
         const id = req.params.id
         const user = req.user
-        const d = new Date();
 
         const expense = await Expenses.findOne({ _id: id })
+        const expMonth=expense.month
+
 
         if (!expense) {
             throw new Error("Expense not found");
@@ -65,7 +69,7 @@ exports.updateExpense = async (req, res) => {
         const month = new Date().toLocaleString('default', { month: 'long' });
 
         const getMonthData = await YearlyExpense.findOne({
-            month: month,
+            month: expMonth,
             userId: userId
         });
 
@@ -122,7 +126,8 @@ exports.deleteExpense = async (req, res) => {
         let month = d.toLocaleString('default', { month: 'long' });
 
         const exp = await Expenses.findOne({ _id: id })
-
+        const expMonth=exp.month
+       
         if (!exp) {
             throw new Error("Expense not found");
         }
@@ -130,10 +135,9 @@ exports.deleteExpense = async (req, res) => {
         if (exp.userId == userId) {
 
             const getMonthData = await YearlyExpense.findOne({
-                month: month,
+                month:expMonth,
                 userId: userId
             })
-
             if (getMonthData) {
                 getMonthData.expense -= exp.amount;
                 await getMonthData.save();
@@ -145,12 +149,13 @@ exports.deleteExpense = async (req, res) => {
             const updatedExpense = Number(req.user.total_expense) - Number(exp.amount)
             const updatedBalance = Number(req.user.remaining_balance) + Number(exp.amount)
 
-            await User.findByIdAndUpdate(userId, {
+            const user = await User.findByIdAndUpdate(userId, {
                 total_expense: updatedExpense,
                 remaining_balance: updatedBalance
             })
 
-            await Expenses.findByIdAndDelete(id)
+
+            const updExp = await Expenses.findByIdAndDelete(id)
             res.status(200).json({ message: 'Deleted Successfully' })
 
         } else {
@@ -170,14 +175,14 @@ exports.getMontlyExpense = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const rowPerPage = parseInt(req.query.rowPerPage) || 10; // You can set a default value if needed
         const skip = (page - 1) * rowPerPage;
-    
+
         const total_expense = await Expenses.countDocuments({ userId: userId });
-    
+
         const expenses = await Expenses.find({ userId: userId })
             .skip(skip)
             .limit(rowPerPage)
             .exec();
-    
+
         return res.status(200).json({ expense: expenses, lastPage: Math.ceil(total_expense / rowPerPage) });
     } catch (err) {
         console.error(err);

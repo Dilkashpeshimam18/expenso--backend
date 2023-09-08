@@ -15,7 +15,7 @@ const fs = require('fs')
 const mongoose=require('mongoose')
 const path = require('path')
 
-const PORT=process.env.PORT || 4000
+const PORT= 4000
 const app = express()
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
 //     flags: 'a'
@@ -38,7 +38,6 @@ app.use('/auth', authRoutes)
 app.use('/expense', expenseRoutes)
 app.use('/purchase', purchasePremiumRoutes)
 app.use('/premium', premiumRoutes)
-// app.use('/password', passwordRoutes)
 app.use('/income', incomeRoutes)
 app.use('/user',userRoutes)
 
@@ -46,6 +45,6 @@ app.use(express.static(path.join(__dirname, "..", "/client/build")));
 app.use(express.static(path.join(__dirname,"..", "/client/public")));
 
 
-app.listen(PORT, () => {
+app.listen(4000, () => {
     console.log('SERVER RUNNING!!')
 })

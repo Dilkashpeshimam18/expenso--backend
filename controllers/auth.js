@@ -50,6 +50,7 @@ exports.postLogin = async (req, res) => {
 
   try {
     const { email, password } = req.body
+    const data=req.body
 
     const authUser = await User.find({ email: email })
 
