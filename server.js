@@ -15,7 +15,7 @@ const fs = require('fs')
 const mongoose=require('mongoose')
 const path = require('path')
 
-const PORT= process.env.PORT || 4000
+const PORT = process.env.PORT || 4002;
 const app = express()
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
 //     flags: 'a'
